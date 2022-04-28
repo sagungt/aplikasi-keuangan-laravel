@@ -6,7 +6,8 @@
 
 @section('css')
   <!-- CSS Libraries -->
-  <link rel="stylesheet" href="{{ asset('assets/modules/jquery-selectric/selectric.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/modules/jquery-selectric/selectric.css')}}">
+  <link rel="stylesheet" href="{{ asset('assets/modules/izitoast/css/iziToast.min.css') }}">
 @endsection
 
 @section('content')
@@ -22,33 +23,19 @@
             <div class="card-header"><h4>Register</h4></div>
 
             <div class="card-body">
-              <form method="POST" action="/register">
+              <form method="POST" action="/reset-password">
                 @csrf
                 <div class="form-group">
-                  <label for="name">Name</label>
+                  <label for="token">Token</label>
                   <input
-                    class="form-control @error('name') is-invalid @enderror"
-                    value="{{ old('name') }}"
+                    class="form-control @error('token') is-invalid @enderror"
+                    value="{{ $token }}"
                     type="text"
-                    name="name"
-                    id="name"
+                    name="token"
+                    id="token"
                     autofocus
                     required>
-                  @error('name')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                  @enderror
-                </div>
-
-                <div class="form-group">
-                  <label for="email">Email</label>
-                  <input
-                    class="form-control @error('email') is-invalid @enderror"
-                    value="{{ old('email') }}"
-                    type="email"
-                    name="email"
-                    id="email"
-                    required>
-                  @error('email')
+                  @error('token')
                     <div class="invalid-feedback">{{ $message }}</div>
                   @enderror
                 </div>
@@ -83,20 +70,8 @@
                 </div>
 
                 <div class="form-group">
-                  <div class="custom-control custom-checkbox">
-                    <input type="checkbox" name="agree" class="custom-control-input @error('agree') is-invalid @enderror" id="agree">
-                    <label class="custom-control-label" for="agree">
-                      I agree with the terms and conditions
-                      @error('agree')
-                        <div>{{ $message }}</div>
-                      @enderror
-                    </label>
-                  </div>
-                </div>
-
-                <div class="form-group">
                   <button type="submit" class="btn btn-primary btn-lg btn-block">
-                    Register
+                    Reset Password
                   </button>
                 </div>
               </form>
@@ -119,7 +94,25 @@
   <!-- JS Libraies -->
   <script src="{{ asset('assets/modules/jquery-pwstrength/jquery.pwstrength.min.js') }}"></script>
   <script src="{{ asset('assets/modules/jquery-selectric/jquery.selectric.min.js') }}"></script>
+  <script src="{{ asset('assets/modules/izitoast/js/iziToast.min.js') }}"></script>
   <script>
     $('.pwstrength').pwstrength();
   </script>
+  @if (session()->has('Success'))
+    <script>
+      iziToast.info({
+        title: 'Success',
+        message: "{{ session('Success') }}",
+        position: 'topRight'
+      });
+    </script>
+  @elseif (session()->has('Error'))
+    <script>
+      iziToast.warning({
+        title: 'Error',
+        message: "{{ session('Error') }}",
+        position: 'topRight'
+      });
+    </script>
+  @endif
 @endpush

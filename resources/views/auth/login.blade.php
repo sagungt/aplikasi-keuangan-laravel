@@ -83,7 +83,7 @@
             </div>
 
             <div class="form-group text-right">
-              <a href="#" class="float-left mt-3">
+              <a href="/forgot-password" class="float-left mt-3">
                 Forgot Password?
               </a>
               <button
