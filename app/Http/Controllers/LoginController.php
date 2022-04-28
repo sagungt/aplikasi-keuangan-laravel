@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 class LoginController extends Controller
 {
@@ -21,7 +22,9 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended('/dashboard')->with('Success', 'Login Success!');
+            return redirect()
+                ->intended('/dashboard')
+                ->with('Success', 'Login Success!');
         }
 
         return back()->with('loginError', 'Login failed. Invalid credentials');
@@ -33,5 +36,28 @@ class LoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect('/login');
+    }
+
+    public function verify()
+    {
+        return (auth()->user()->hasVerifiedEmail())
+            ? redirect('dashboard')
+            : view('auth.verify');
+    }
+
+    public function resend(Request $request)
+    {
+        $request
+            ->user()
+            ->sendEmailVerificationNotification();
+        return back()
+            ->with('Success', 'Verification link sent!');
+    }
+
+    public function verification(EmailVerificationRequest $request)
+    {
+        $request->fulfill();
+        
+        return redirect('/dashboard');
     }
 }

@@ -1,11 +1,9 @@
 <?php
 
-use App\Http\Controllers\TestController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,36 +30,20 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/email/verify', function () {
-        return (auth()->user()->hasVerifiedEmail())
-            ? redirect('dashboard')
-            : view('auth.verify');
-    })
+    Route::get('/email/verify', [LoginController::class, 'verify'])
         ->name('verification.notice');
 
-    Route::post('/email/verification-notification', function (Request $request) {
-        $request
-            ->user()
-            ->sendEmailVerificationNotification();
-        return back()
-            ->with('Success', 'Verification link sent!');
-    })
+    Route::post('/email/verification-notification', [LoginController::class, 'resend'])
         ->middleware('throttle:6,1')
         ->name('verification.resend');
     
-    Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-        $request
-            ->fulfill();
-        
-        return redirect('/dashboard');
-    })
+    Route::get('/email/verify/{id}/{hash}', [LoginController::class, 'verification'])
         ->middleware('signed')
         ->name('verification.verify');
 });
 
 Route::middleware('verified')->group(function () {
-    // * change controller
-    Route::get('/dashboard', [TestController::class, 'dashboard'])
+    Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard');
     Route::post('/logout', [LoginController::class, 'logout']);
 });

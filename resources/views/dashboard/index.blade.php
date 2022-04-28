@@ -510,6 +510,7 @@
         message: "{{ session('Success') }} Welcome {{ auth()->user()->name }}",
         position: 'topRight'
       });
+      console.log(true);
     </script>
   @endif
 @endpush
