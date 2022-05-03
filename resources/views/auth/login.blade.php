@@ -74,9 +74,9 @@
                   name="remember"
                   class="custom-control-input"
                   tabindex="3"
-                  id="remember-me"
+                  id="remember"
                 />
-                <label class="custom-control-label" for="remember-me"
+                <label class="custom-control-label" for="remember"
                   >Remember Me</label
                 >
               </div>
@@ -156,7 +156,7 @@
     </script>
   @elseif (session()->has('loginError'))
     <script>
-      iziToast.warning({
+      iziToast.error({
         title: 'Error',
         message: "{{ session('loginError') }}",
         position: 'topRight'

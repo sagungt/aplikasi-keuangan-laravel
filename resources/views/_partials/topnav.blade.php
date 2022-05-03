@@ -7,15 +7,15 @@
   </form>
   <ul class="navbar-nav navbar-right">
     <li class="dropdown"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
-      <img alt="image" src="assets/img/avatar/avatar-1.png" class="rounded-circle mr-1">
-      <div class="d-sm-none d-lg-inline-block">Hi, {{ auth()->user()->name }}</div></a>
+      <img alt="image" src="{{ asset('assets/img/avatar/avatar-'. (int) $user->id % 5 + 1 .'.png') }}" class="rounded-circle mr-1">
+      <div class="d-sm-none d-lg-inline-block">Hi, {{ $user->name }}</div></a>
       <div class="dropdown-menu dropdown-menu-right">
-        <div class="dropdown-title d-lg-none">Hi, {{ auth()->user()->name }}</div>
-        <a href="#" class="dropdown-item has-icon">
+        <div class="dropdown-title d-lg-none">Hi, {{ $user->name }}</div>
+        <a href="/dashboard/user/{{ encrypt($user->id) }}" class="dropdown-item has-icon">
           <i class="far fa-user"></i> Profile
         </a>
         <a href="#" class="dropdown-item has-icon">
-          <i class="fas fa-user-shield"></i> Data Pribadi
+          <i class="fas fa-user-shield"></i> Private Information
         </a>
         <div class="dropdown-divider"></div>
         <form action="/logout" method="post">
