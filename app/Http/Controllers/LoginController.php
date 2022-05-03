@@ -21,10 +21,12 @@ class LoginController extends Controller
     {
         $credentials = $request->validate([
             'email' => 'required|email:dns',
-            'password' => 'required'
+            'password' => 'required',
         ]);
 
-        if (Auth::attempt($credentials)) {
+        $remember = $request->has('remember') ? true : false;
+
+        if (Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
             return redirect()
                 ->intended('/dashboard')
@@ -36,10 +38,10 @@ class LoginController extends Controller
 
     public function logout(Request $request)
     {
-        Auth::logout();
+        Auth::logoutCurrentDevice();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('/login');
+        return redirect('/login')->with('Success', 'Logged out');
     }
 
     public function verify()

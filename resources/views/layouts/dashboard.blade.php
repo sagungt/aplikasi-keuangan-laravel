@@ -11,6 +11,7 @@
 </head>
 <body>
   <div id="app">
+    @php($user = auth()->user())
     <div class="main-wrapper main-wrapper-1">
       @include('_partials.topnav')
       @include('_partials.sidebar')
