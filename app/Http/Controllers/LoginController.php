@@ -23,8 +23,8 @@ class LoginController extends Controller
             'email' => 'required|email:dns',
             'password' => 'required',
         ]);
-
-        $remember = $request->has('remember') ? true : false;
+        
+        $remember = $request->has('remember');
 
         if (Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
@@ -64,7 +64,7 @@ class LoginController extends Controller
     {
         $request->fulfill();
         
-        return redirect('/dashboard');
+        return redirect('/login')->with('Success', 'Email verified, now login!');
     }
 
     public function requestPassword()

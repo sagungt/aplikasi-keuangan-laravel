@@ -11,10 +11,11 @@
 @endsection
 
 @section('content')
+{{-- {{dd(auth()->user()->is_admin)}} --}}
   <div class="main-content">
     <section class="section">
       <div class="section-header">
-        <h1>DataTables</h1>
+        <h1>All Users</h1>
         <div class="section-header-breadcrumb">
           <div class="breadcrumb-item active"><a href="/dashboard">Dashboard</a></div>
           <div class="breadcrumb-item">All Users</div>
@@ -78,7 +79,6 @@
     </section>
   </div>
   <form class="modal-part" id="modal-form-part" method="POST" action="/dashboard/admin/users">
-    @method('patch')
     @csrf
     <p>Add new user.</p>
     <div class="form-group">
@@ -177,7 +177,9 @@
             const isVerified = row['email_verified_at']
               ? '<div class="badge badge-primary my-1">Verified</div>'
               : '<div class="badge badge-warning my-1">Unverified</div>';
-            const isAdmin = '<div class="badge badge-danger my-1">Admin</div>'
+            const isAdmin = row['is_admin']
+              ? '<div class="badge badge-danger my-1">Admin</div>'
+              : '';
             return isVerified + isComplete + isAdmin;
           }
         },
