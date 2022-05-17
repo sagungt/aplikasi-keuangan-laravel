@@ -16,6 +16,7 @@ class UserController extends Controller
      */
     public function index()
     {
+        $this->authorize('admin');
         $users = User::all();
         $users = $users->map(function ($user, $key) {
             $user['encrypted_id'] = encrypt($user->id);
@@ -53,7 +54,9 @@ class UserController extends Controller
         $validatedData['password'] = bcrypt($validatedData['password']);
         $user = User::create($validatedData);
         event(new Registered($user));
-        return view('dashboard.admin.users')->with('Success', 'User successfully added');
+        return view('dashboard.admin.users', [
+            'users' => User::all(),
+        ])->with('Success', 'User successfully added');
     }
 
     /**

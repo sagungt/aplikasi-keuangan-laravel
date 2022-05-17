@@ -5,7 +5,6 @@
 @endsection
 
 @section('css')
-  <link rel="stylesheet" href="{{ asset('assets/modules/izitoast/css/iziToast.min.css') }}">
 @endsection
 
 @section('content')
@@ -145,7 +144,6 @@
 @endsection
 
 @push('scripts')
-  <script src="{{ asset('assets/modules/izitoast/js/iziToast.min.js') }}"></script>
   @if (session()->has('Success'))
     <script>
       iziToast.info({
